@@ -78,6 +78,12 @@ section{border-top:1px solid var(--line);padding-block:28px}
 .sig-shell{width:72px;height:auto;display:block}
 .sig-links{display:grid;gap:4px;font-size:14.5px}
 .next{font-size:15px;max-width:62ch;margin:0}
+
+.letters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0}
+.letters input{font:inherit;font-size:15px;color:var(--fg);background:var(--surface);border:1px solid var(--line);padding:10px 12px;width:min(100%,300px);border-radius:0}
+.letters input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.letters-msg{flex-basis:100%;margin:0;font-size:14.5px;color:var(--muted);min-height:1px}
+.letters.done input,.letters.done button{display:none}
 @media (max-width:760px){
   .sig{padding-left:0}
   .hero{grid-template-columns:1fr;gap:22px;padding-block:20px 24px}
@@ -166,7 +172,7 @@ section{border-top:1px solid var(--line);padding-block:28px}
     <div class="label" id="c-h">Contact</div>
     <div style="display:grid;gap:16px">
       <div class="contact">
-        <span class="email" id="email">tegan.robinett@gmail.com</span>
+        <span class="email" id="email">hi@teganrobinett.com</span>
         <button class="copy" id="copybtn" type="button">Copy email</button>
         <span class="label">Booking · press · sync</span>
       </div>
@@ -176,8 +182,21 @@ section{border-top:1px solid var(--line);padding-block:28px}
         <a href="https://teganrobinett.bandcamp.com/">Bandcamp</a>
         <a href="https://www.instagram.com/tegansphone/">Instagram</a>
         <a href="https://www.youtube.com/@TeganRobinett">YouTube</a>
+        <a href="https://paprikavaseline.tumblr.com/">Tumblr</a>
         <a href="https://teganrobinett.com/">teganrobinett.com</a>
       </div>
+    </div>
+  </section>
+  <section class="row" aria-labelledby="l-h">
+    <div class="label" id="l-h">Letters</div>
+    <div style="display:grid;gap:12px">
+      <p class="next">Occasional letters with new music, shows and what happens behind the curtain.</p>
+      <form class="letters" action="https://buttondown.com/api/emails/embed-subscribe/teganrobinett" method="post" target="_blank">
+        <input type="email" name="email" placeholder="your email" aria-label="Email address" required autocomplete="email">
+        <input type="hidden" name="embed" value="1">
+        <button class="btn primary" type="submit">Join</button>
+        <p class="letters-msg" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </section>
   <footer class="sig">
@@ -199,5 +218,17 @@ document.getElementById('copybtn').addEventListener('click',function(){
 });
 </script>
 
+<script>
+document.querySelectorAll('form.letters').forEach(function(f){
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var msg=f.querySelector('.letters-msg'),btn=f.querySelector('button');
+    btn.disabled=true;
+    fetch(f.action,{method:'POST',mode:'no-cors',body:new FormData(f)})
+      .then(function(){f.classList.add('done');msg.textContent='thank you. check your inbox to confirm.';})
+      .catch(function(){f.submit();});
+  });
+});
+</script>
 </body>
 </html>

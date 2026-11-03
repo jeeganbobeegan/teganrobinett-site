@@ -36,6 +36,17 @@ nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-co
 nav a{color:var(--gold);text-decoration:none;font-weight:300;font-size:clamp(20px,2.4vw,34px);line-height:1;letter-spacing:.01em;display:inline-block;padding-block:6px;transition:opacity .25s ease}
 nav a:hover{opacity:.7}
 nav a:focus-visible{outline:1px solid var(--gold);outline-offset:6px}
+
+.letters{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;margin:0}
+.letters label{font-weight:300;font-size:clamp(14px,1.3vw,17px);opacity:.85}
+.letters input{font:inherit;font-weight:300;font-size:clamp(14px,1.3vw,17px);color:var(--gold);background:transparent;border:0;border-bottom:1px solid var(--gold-soft);padding:6px 2px;width:min(64vw,240px);border-radius:0}
+.letters input::placeholder{color:var(--gold-soft)}
+.letters input:focus{outline:none;border-bottom-color:var(--gold)}
+.letters button{font:inherit;font-weight:300;font-size:clamp(14px,1.3vw,17px);color:var(--ink);background:var(--gold);border:0;padding:7px 16px;cursor:pointer;transition:opacity .25s ease}
+.letters button:hover{opacity:.8}
+.letters button:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+.letters-msg{flex-basis:100%;text-align:center;font-weight:300;font-size:15px;min-height:1px}
+.letters.done label,.letters.done input,.letters.done button{display:none}
 @media (max-width:700px){
   .bottom .name{width:min(88vw,440px)}
   .photo{height:122%;object-position:44% 0}
@@ -58,10 +69,30 @@ nav a:focus-visible{outline:1px solid var(--gold);outline-offset:6px}
         <li><a href="https://ffm.bio/teganrobinett">listen</a></li>
         <li><a href="https://www.instagram.com/tegansphone/">look</a></li>
         <li><a href="https://teganrobinett.bandcamp.com/">store</a></li>
-        <li><a href="mailto:tegan.robinett@gmail.com">contact</a></li>
+        <li><a href="https://paprikavaseline.tumblr.com/">journal</a></li>
+        <li><a href="mailto:hi@teganrobinett.com">hi</a></li>
       </ul>
     </nav>
+    <form class="letters" action="https://buttondown.com/api/emails/embed-subscribe/teganrobinett" method="post" target="_blank">
+      <label for="le">letters, now and then</label>
+      <input id="le" type="email" name="email" placeholder="your email" required autocomplete="email">
+      <input type="hidden" name="embed" value="1">
+      <button type="submit">join</button>
+      <p class="letters-msg" role="status" aria-live="polite"></p>
+    </form>
   </div>
 </main>
+<script>
+document.querySelectorAll('form.letters').forEach(function(f){
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var msg=f.querySelector('.letters-msg'),btn=f.querySelector('button');
+    btn.disabled=true;
+    fetch(f.action,{method:'POST',mode:'no-cors',body:new FormData(f)})
+      .then(function(){f.classList.add('done');msg.textContent='thank you. check your inbox to confirm.';})
+      .catch(function(){f.submit();});
+  });
+});
+</script>
 </body>
 </html>
